@@ -15,7 +15,7 @@ There are two type of option, \fB Action\fR option that perform a task and are c
 Now \fB Action \fR option is explained in execution order, this means that if all action are selected the order of execution of action will be this:
 .TP 
 .B -e|--export-variables
-This action export evironment variable
+This action export evironment variable previous setted by -b or -c option
 .TP
 .B -s|--bitstream
 In order to generate .bit and .bin file this Action enter in pulpissimo directory, it parse the ips_list.yml using the PULP IPApproX IP management tool to generate tcl scripts for all the IPs used in the PULPissimo project using 
@@ -34,7 +34,7 @@ This operation might take a while. If everything goes well your fpga directory s
        the binary configuration file to flash to a non-volatile configuration memory.
 
 This script now support only bitstream download so the architecture should be downloaded whenever the board is turned on, but both file are generated.
-
+.PP
 .B Bitstream common ERROR
  the bitstream generation could not work well due to this kind of problem:
 .RS 1.2i
@@ -66,12 +66,13 @@ Increase the swap in your machine to 8GB following these commands:
 .B -d|--download
 In order to download bitstream (because binary need flsshing) into fpga we need the  JTAG usb connection. We also needs to set the board boot mode in \fB JTAG boot\fR usually using DIP switch on board as reported in the board User Guide ( see next board specific help).
 This action use the makefile in pulpissimo/fpga to download bitstream.
+
 .B Download common Error:
 .RS 1.2i
 .TP
 .B Board is not detected
 If the board is powerd on and connected, usually this is connected to Vivado driver, so execute \fB sudo ./install_drivers \fR in the directory 
-.IT {Xilinx_installation_dir}/Vivado/2019.2/data/xicom/cable_drivers/lin64/install_script
+.B {Xilinx_installation_dir}/Vivado/2019.2/data/xicom/cable_drivers/lin64/install_script
 and reboot your machine
 .RE
 Now the fpga is read to emulate PULPissimo
@@ -81,22 +82,22 @@ Now the fpga is read to emulate PULPissimo
 This action create the 
 .B BOARD.sh 
 file in 
-.IT pulp-sdk/configs/fpgas/pulpissimo
+.B pulp-sdk/configs/fpgas/pulpissimo
 directory and source it in order to configure the SDK for the FPGA platform, then 
-.IT configs/pulpissimo.sh
+.B configs/pulpissimo.sh
 file is source to select correct microcontroller ( pulpissimo), finally the makefile in pulp-sdk directory is used to build the SDK. Also the json file
-.IT pulp-sdk/pulp-config/configs/fpgas/BOARD.json
+.B pulp-sdk/pulp-config/configs/fpgas/BOARD.json
 is generated and used in building.
 Finally all variable are saved in
-.IT .environ.env
+.B .environ.env
 file, these variable are setted to semplify some manual terminal operation, infact once that -b action is done we could set this variable in a whatever terminal using -e option that set variable in ~/.bash_profile that is sourced by ~/.bashrc at shell start. 
 
 .TP
 .B -c|--compile app_dir
 Compile test.c file founded in directory:
-.IT /pulp-rt-examples/\fBapp_dir\fR
+.B /pulp-rt-examples/\fBapp_dir\fR
 creating the elf file:
-.IT /pulp-rt-examples/\fBapp_dir\fR/build/pulpissimo/test/test
+.B /pulp-rt-examples/\fBapp_dir\fR/build/pulpissimo/test/test
 That have the UART as default io peripheral.
 
 .TP
@@ -109,15 +110,15 @@ is used to select correct executable file located at
 The left-up terminal run openOCD using 
 .IT ./pulpissimo/fpga/pulpissimo-BOARD/CONNECTOR_NAME.cfg
 configuration file, right-up terminal run gdb using 
-.IT $DIR/pulpissimo/fpga/pulpissimo-$BOARD/elf_run.gdb
+.B $DIR/pulpissimo/fpga/pulpissimo-$BOARD/elf_run.gdb
 script to run 
-.IT /pulp-rt-examples/$T_OPT/build/pulpissimo/test/test
+.B /pulp-rt-examples/$T_OPT/build/pulpissimo/test/test
 executable. Instead other bottom terminal are USB interface, if the usb device is specified only one bottom terminal is displayed, if instead
 .B all option is done all usd are screen in differen terminals.
 The important thing to do is to create 
-.IT CONNECTOR_NAME.cfg 
+.B CONNECTOR_NAME.cfg 
 file in 
-.IT ./pulpissimo/fpga/pulpissimo-$BOARD/
+.B ./pulpissimo/fpga/pulpissimo-$BOARD/
 otherwhise openOCD give many errors!!!.
 
 .TP 
@@ -132,7 +133,7 @@ Is used to define the board to use, is used in -b, -c and -t option, if also -r|
 .TP 
 .B -r|--connector CONNECTOR_NAME
 Set the base name of .cfg file used by openOCD to configure JTAG programmer and debugger used to program and debug the microcontroller. Indeed, JTAG is connected to FPGA JTAG, while PULPissimo JTAG  is mapped on another connector. It is important to observe that this connection can be made by using other different JTAG adapters, such as Digilent JTAG-HS2 or OLIMEX ARM-USB-OCD-H that are those ones suggested by the guide. Each adapter needs its own configuration file to setup the communication that will be saved in 
-.IT ./pulpissimo/fpga/pulpissimo-$BOARD/CONNECTOR_NAME.cfg.
+.B ./pulpissimo/fpga/pulpissimo-$BOARD/CONNECTOR_NAME.cfg.
 
 .SH BOARDS
 .TP 
