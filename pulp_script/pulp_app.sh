@@ -39,16 +39,16 @@ OPTION
 
 	-d|--download
 		download bitstream into board using
-		make -C pulpissimo-zcu102 download
+		make -C pulpissimo-[board] download
 
 	-c|--compile directory_of_application
 		create cross compiled test elf file of hello
 
 	-u|--usb-for-screen usb_name|all|i
-		selection of usb for minicom connection example:
+		selection of usb for screen connection example:
 		-u ttyUSB0
 		all option istead screen all usb
-		i option show corrently usb and their name
+		i option show current usb and their name
 	-t|--terminal directory_of_application
 		if the  terminal with openOCD, gdb and screen, 
 		for screen is possible to select usb number using
@@ -247,16 +247,17 @@ if [[ $BITSTREAM -eq 1 ]]; then
 	./update-ips
 	# generate bitstream 
 	cd fpga
-	mon_run "make clean_zcu102" "$LOG/bitstream_log.txt" 1 $LINENO
-	mon_run "make zcu102" "$LOG/bitstream_log.txt" 0 $LINENO
+	mon_run "make clean_$BOARD" "$LOG/bitstream_log.txt" 1 $LINENO
+	
+	mon_run "make $BOARD" "$LOG/bitstream_log.txt" 0 $LINENO
 	cd $DIR
 fi
 
 if [[ $DOWNLOAD -eq 1 ]]; then
-	Action "Have you connected usb cables for riscv download at port J2 of zcu102?"
+	Action "Have you connected usb cables for riscv download at port J2 of $BOARD?"
 	cd $DIR/pulpissimo/fpga
 	Print "f" " Flashing fpga"
-	mon_run "make -C pulpissimo-zcu102 download" "$LOG/flashing_log.txt" 1 $LINENO
+	mon_run "make -C pulpissimo-$BOARD download" "$LOG/flashing_log.txt" 1 $LINENO
 fi
 
 if [[ $BUILD_SDK_OPENOCD -eq 1 ]] || [[ $COMPILE -eq 1 ]] ; then
