@@ -50,12 +50,13 @@ OPTION
 		all option istead screen all usb
 		i option show current usb and their name
 	-t|--terminal directory_of_application
-		if the  terminal with openOCD, gdb and screen, 
+		opens 3 terminals for communication and debugging 
+		with FPGA through UART, gdb and OpenOCD 
 		for screen is possible to select usb number using
 		-u option
 	directory_of_application will be placed in this path
 	./pulp-rt-examples/directory_of_application/
-	in order to fin d application directory, while in this path
+	in order to find application directory, while in this path
 	./pulp-rt-examples/directory_of_application/build/pulpissimo/test/test
 	to find executable.
 "

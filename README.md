@@ -1,10 +1,10 @@
-# AutomatizePULPissimo
+# AutomatizePULP
 
 Here you can find series of bash script to automatize PULPissimo installation and debug mainly on zcu102 board.
 
 ## Files description
-
-AutomatizePULPissimo
+```bash
+AutomatizePULP
 	│
 	├─install.sh			
 	├─pulp_env_example.env
@@ -21,7 +21,7 @@ AutomatizePULPissimo
 	└─[lib]
 		│
 		└─ccommon.sh
-
+```
 
 
 ### install.sh: 
@@ -90,7 +90,12 @@ This is the script to launch if you want to run an application on the FPGA. In p
 	- -u ttyUSB0	--> open one shell with screen on ttyUSB0
 	- -u all  	--> open many shell with screen on all usb
 	- -u i 		--> show current usb and their name
-- -t:
+- -t: opens 3 terminals for communication and debugging with FPGA through UART, gdb and OpenOCD
+	- -t directory_of_application<br/>
+	directory_of_application will be placed in this path ./pulp-rt-examples/directory_of_application/<br/>
+	in order to find application directory, while in this path
+	./pulp-rt-examples/directory_of_application/build/pulpissimo/test/test
+	to find executable.
 	
 ### lib/ccommon.sh:
 
@@ -99,5 +104,8 @@ This is the script to launch if you want to run an application on the FPGA. In p
 
 ### Team
 
+-Fiore Luca
+-Neri Marcello
+-Ribaldone Elia
 
 --------------------
