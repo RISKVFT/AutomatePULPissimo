@@ -1,0 +1,119 @@
+.TH PULP_INSTALL "1" "July 24" "" "User Commands"
+.SH NAME
+.B pull_install
+Installation of PULPissimo project, an evolution of PULPino.
+.SH SYNOPSIS         
+.B pulp_install
+-v [-c pulp|linux|linux32|linuxm]
+[-p 0|1|2|3|4|5]
+[-f y|n]
+.SH DESCRIPTION          
+.B pulp_install
+is a bash script that install and configure 
+.B PULPissimo project 
+in the directory in which it
+is runned, particularly it download and configure following repository:
+.PP                    
+.TP
+.B pulp-riscv-gnu-toolchain installation 
+This toolchain is available at <https://github.com/pulp-platform/pulp-riscv-gnu-toolchain-pulp-riscv-gnu-toolchain> It provides theRISCV C and C++ cross-compiler.  After the installation of all the necessary Ubuntu (or CentOS) dependencies, the script clones the git repository of the toolchain and configures the correct cross-compiler according to the option -c|--cross-compiler set as command line argument. With the -t|--test-suite command line argument, instead, the user can decide if install or not the De-jaGnu test suite for RISC-V, that is a front-end to write tests for any pro-gram with a portable interface.  In this step, the environment variables PULP_RISCV_GCC_TOOLCHAIN and  VSIM_PATH are set. The installation directory of the riscv toolchain is "/opt/riscv/", so this is the value assigned to PULP_RISCV_GCC_TOOLCHAIN variable. Instead, VSIM_PATH is set to "(pulpissimo_root)/pulpissimo". Obviously, also other minor variables are set in this step. All these env variables are also added to .bash_profile file so as to make them permanent every time a new bash shell is create.
+
+.TP 
+.B PULP SDK installation
+The PULP SDK is available ati <https://github.com/pulp-platform/pulp-sdk.git> and after the installation of all the dependencies (such as specific version of Python) the repository is cloned.  In this stage, target and platform (rtl simulator, fpga, virtual platform) are chosen, so that the SDK can be built properly. This is a very important step, because the SDK allows to compile and run applications. To do this, it needs to be initializedby sourcing the "sourceme.sh" file which is inside the installation folder. Also in this stage, other env variables are set and saved permanently.
+
+.TP 
+.B PULP Builder installation
+The PULP Builder repository is available at <https://github.com/pulp-platform/pulp-builder.git> and is used to build application for pulp project.  After the clone of the repository the builder is configured.
+
+.TP
+.B PULPissimo installation 
+PULPissimo project repository is available at <https://github.com/pulp-platform/pulpissimo.git>. This is the most important step, since the PULPissimo project contains all the files required to build the rtl simulator or to map the system on fpga. The repository also contains all the files of IPs which compose the PULP system, including the RI5CY core files, and documentation, fpga support, testbench, simulation and examples.
+Files related to the ZCU102 will be used later in another script aimed to facilitate the fpga configuration process and the generation of the bitstream to flash into the board.
+
+.TP
+.B PULPissimo example
+Example of application project can be found at <https://github.com/pulp-platform/pulp-rt-examples.git>. The script downloads this repository and build hello application by default (it is possible to change the application to build). These example applications will be used later in another script for the fpga.
+.IT 
+.B Virtual platform installation 
+This is the last step that has been added for completeness. This step prepares the PULP environment for the virtual platform.
+
+
+.SH OPTION
+A list of flags and their descriptions:
+
+.TP
+.B v|--verbose
+verbose option, script print many others information
+.TP
+.B c|--cross_compiler [pulp|linux|linux32|linuxm]
+This option define what cross compiler the script install:
+.RS 1.2i
+.TP
+.B pulp
+newlib cross-compiler for all pulp variants
+This will use the multilib support to build the libraries for 
+the various cores (riscy, zeroriscy and so on). The right libraries 
+will be selected depending on which compiler options you use.
+.Tp 
+.B newlib 
+Newlib cross-compiler, You should now be ableto use riscv-gcc and its cousins.
+.TP
+.B linux
+Linux cross compiler 64 bit
+Supported architectures are rv64i plus standard extensions (a)tomics, 
+(m)ultiplication and division, (f)loat, (d)ouble, or (g)eneral for MAFD.
+Supported ABIs are ilp32 (32-bit soft-float), ilp32d (32-bit hard-float), ilp32f 
+(32-bit with single-precision in registers and double in memory, niche use only), 
+lp64 lp64f lp64d (same but with 64-bit long and pointers).
+.TP 
+.B linux32 
+Linux cross compiler 32 bit
+Supported architectures are rv32i plus standard extensions (a)tomics, 
+(m)ultiplication and division, (f)loat, (d)ouble, or (g)eneral for MAFD.
+Supported ABIs are ilp32 (32-bit soft-float), ilp32d (32-bit hard-float), ilp32f 
+(32-bit with single-precision in registers and double in memory, niche use only), 
+lp64 lp64f lp64d (same but with 64-bit long and pointers).
+.TP
+.B linuxm 
+Linux cross-compiler, both 32 and 64 supported
+.RE
+
+.TP 
+.B -p|--part_install [0|1|2|3|4|5]
+Default is set to 0. Set this argument from 0 to 3 to decide the starting point of the installation:
+.RS 1.2i
+.PP
+.B 0
+start from scratch
+.PP
+.B 1
+start after the toolchain
+.PP
+.B 2
+start after the sdk
+.PP
+.B 3
+start after pulp-builder
+.PP
+.B 4
+start after test building (hello)
+.PP
+.B 5
+only virtual platform
+.RE
+
+.TP 
+.B -t|--test_suite [y|n] 
+Decide if install test suite or not, this test suite 
+
+.PP
+.SH ENVIRONMENT      
+All setted variable are added to .bash_profile file that is loaded each bash restart.
+.SH SEE ALSO
+.BR a 3 ,
+.BR a 3 
+.SH BUGS            
+Board modification are not well tested!!.
+.SH CREDITS 
+Created by Elia Ribaldone, Luca Fiore and Marcello Neri
