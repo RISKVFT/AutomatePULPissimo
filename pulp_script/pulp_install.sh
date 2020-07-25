@@ -1,6 +1,6 @@
 # This file install pulpissimo and all dependecies:
 # 
-# pulpissimo dipendencies:
+# pulpissimo dependencies:
 #		installation of pulp-builder:
 #			https://github.com/pulp-platform/pulp-builder/blob/master/README.md
 # 			pulp-builder dependencies:
@@ -66,7 +66,7 @@ UsageExit() {
 					 lp64 lp64f lp64d (same but with 64-bit long and pointers).
 				linuxm ->  Linux cross-compiler, both 32 and 64 supported
 		-p|--part_install [0|1|2|3|4|5]
-			Default is set to 0. Set this argument from 0 to 3 to decide the starting point of the installation:
+			Default is set to 0. Set this argument from 0 to 5 to decide the starting point of the installation:
 				0 -> start from scratch
 				1 -> start after the toolchain
 				2 -> start after the sdk
@@ -405,7 +405,6 @@ if [[ $PART -le 5 ]]; then
 	cd ..
 	#mon_run "make conf" $LOG_DIR/log/make_conf.txt 1 $LINENO
 fi #end of virtual platform
-
 
 
 
