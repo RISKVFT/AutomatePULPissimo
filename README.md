@@ -104,8 +104,8 @@ This is the script to launch if you want to run an application on the FPGA. In p
 
 ### Team
 
--Fiore Luca
--Neri Marcello
--Ribaldone Elia
+- Fiore Luca
+- Neri Marcello
+- Ribaldone Elia
 
 --------------------
