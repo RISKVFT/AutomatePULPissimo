@@ -22,7 +22,15 @@ AutomatizePULPissimo
 	└─[lib]
 		│
 		└─ccommon.sh
-
+freeRTOS
+├── demos
+|   └── gwt            <--- "Hello World" demo
+├── freertos_kernel    <--- FreeRTOS kernel source code
+|    ├── include       <--- FreeRTOS kernel headers and macros
+|    ├── License       <--- FreeRTOS License file
+|    └── portable      <--- FreeRTOS port source files
+└── vendors            <--- Vendors specific drivers & libraries
+     └── gwt
 
 - ./install.sh:
 	This script simply puts pulp_app.sh and pulp_install.sh into the right directories into the filesystem to be always accessible. It copies ./pulp_script/pulp_app.sh and ./pulp_script/pulp_install.sh in /usr/bin/ and ./manpages/pulp_app.1 and ./manpages/pulp_install.1 into /usr/share/man/man1/. Then it also copies ./lib/ccommon.sh script into custom folder /usr/lib/bash-lib where there are all the user defined bash functions.
