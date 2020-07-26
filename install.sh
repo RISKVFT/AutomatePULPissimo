@@ -17,6 +17,7 @@ export_var "BASHLIB" "/usr/lib/bash-lib"
 install_lib ccommon.sh
 install_script pulp_install
 install_script pulp_app
+install_script pulp_script
 
 
 echo "Restart terminal before use program"

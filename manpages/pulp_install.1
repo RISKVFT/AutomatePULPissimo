@@ -6,7 +6,7 @@ Installation of PULPissimo project, an evolution of PULPino.
 .B pulp_install
 -v [-c pulp|linux|linux32|linuxm]
 [-p 0|1|2|3|4|5]
-[-f y|n]
+[-t y|n]
 .SH DESCRIPTION          
 .B pulp_install
 is a bash script that install and configure 
@@ -34,7 +34,7 @@ Files related to the ZCU102 will be used later in another script aimed to facili
 .TP
 .B PULPissimo example
 Example of application project can be found at <https://github.com/pulp-platform/pulp-rt-examples.git>. The script downloads this repository and build hello application by default (it is possible to change the application to build). These example applications will be used later in another script for the fpga.
-.IT 
+.TP
 .B Virtual platform installation 
 This is the last step that has been added for completeness. This step prepares the PULP environment for the virtual platform.
 
@@ -113,7 +113,6 @@ All setted variable are added to .bash_profile file that is loaded each bash res
 .SH SEE ALSO
 .BR a 3 ,
 .BR a 3 
-.SH BUGS            
-Board modification are not well tested!!.
+.SH BUGS            .
 .SH CREDITS 
 Created by Elia Ribaldone, Luca Fiore and Marcello Neri

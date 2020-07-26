@@ -4,7 +4,7 @@
 \- Bitsream generation, bitstream board download, application compilation and debug interface of PULPissimo project installed with pulp_install.
 .SH SYNOPSIS         
 .B pulp_app
-
+[-s -d -b [-c APPDIR] [-t APPDIR] -e -h [-u USB|all|i] [-o BOARD] [-r CONNECTOR_NAME]]
 .SH DESCRIPTION          
 .B pulp_install
 is a bash script that should be used after installation of PULPissimo  ( possibly using \fBpulp_install	\fR ) and it is able to create the bitstream of pulpissimo architecture, download it into fpga, compile applications and run it into PULPissimo architecture on fpga using openOCD for degub.  
@@ -93,26 +93,26 @@ Finally all variable are saved in
 file, these variable are setted to semplify some manual terminal operation, infact once that -b action is done we could set this variable in a whatever terminal using -e option that set variable in ~/.bash_profile that is sourced by ~/.bashrc at shell start. 
 
 .TP
-.B -c|--compile app_dir
+.B -c|--compile C_APPDIR
 Compile test.c file founded in directory:
-.B /pulp-rt-examples/\fBapp_dir\fR
+.B /pulp-rt-examples/\fBC_APPDIR\fR
 creating the elf file:
-.B /pulp-rt-examples/\fBapp_dir\fR/build/pulpissimo/test/test
+.B /pulp-rt-examples/\fBC_APPDIR\fR/build/pulpissimo/test/test
 That have the UART as default io peripheral.
 
 .TP
-.B -t|--terminals app_dir
+.B -t|--terminals T_APPDIR
 This Action can be performed if all previous Action are done, It open a series of terminals that connect board with openOCD to use gdb and UART to read data send from board.
 The option 
 .B app_dir 
 is used to select correct executable file located at
-.IT /pulp-rt-examples/\fBapp_dir\fR/build/pulpissimo/test/test.
+.IT /pulp-rt-examples/\fBT_APPDIR\fR/build/pulpissimo/test/test.
 The left-up terminal run openOCD using 
 .IT ./pulpissimo/fpga/pulpissimo-BOARD/CONNECTOR_NAME.cfg
 configuration file, right-up terminal run gdb using 
 .B $DIR/pulpissimo/fpga/pulpissimo-$BOARD/elf_run.gdb
 script to run 
-.B /pulp-rt-examples/$T_OPT/build/pulpissimo/test/test
+.B /pulp-rt-examples/$T_APPDIR/build/pulpissimo/test/test
 executable. Instead other bottom terminal are USB interface, if the usb device is specified only one bottom terminal is displayed, if instead
 .B all option is done all usd are screen in differen terminals.
 The important thing to do is to create 
@@ -122,16 +122,20 @@ file in
 otherwhise openOCD give many errors!!!.
 
 .TP 
-.B -u|--usb-for-screen [ USB|all|i ] 
+.B -u|--usb-for-screen [ USB|all|i ]  (default USB=ttyUSB0)
 Option to use with -t Action since define the usb to receive from board. USB is for example ttyUSB0 (default value), if instead all is given all ttyUSB from 0 to 5 are displayed ( supponing to have a USB 3.0 4-Port Hub ).
 i option is used to show all usb device with their name.
 
 .TP
-.B -b|--board  BOARD
-Is used to define the board to use, is used in -b, -c and -t option, if also -r|--connector should be setted, -b option should be defined before!!.
+.B -b|--board  BOARD (default BOARD=zcu102)
+ This option is used to define the board to use, BOARD variable is  used in  -b,  -c  and  -t action. If you also use -r|--connector option, to set connector, be careful because BOARD option should be setted before!!  otherwise default board will be used. For example:
+.B pulp_app -o zcu104 -r olimex-arm-usb-tiny-h -b -c -t
+is a valid command, while 
+.B pulp\_app -r olimex-arm-usb-tiny-h -o zcu104 -b -c -t
+don't work as you want since olimex-arm-usb-tiny-h.cfg file is searched in ./pulpissimo/fpga/pulpissimo-zcu102/ path since "zcu102" is the default BOARD.
 
 .TP 
-.B -r|--connector CONNECTOR_NAME
+.B -r|--connector CONNECTOR_NAME (default CONNECTOR_NAME=olimex-arm-usb-tiny-h)
 Set the base name of .cfg file used by openOCD to configure JTAG programmer and debugger used to program and debug the microcontroller. Indeed, JTAG is connected to FPGA JTAG, while PULPissimo JTAG  is mapped on another connector. It is important to observe that this connection can be made by using other different JTAG adapters, such as Digilent JTAG-HS2 or OLIMEX ARM-USB-OCD-H that are those ones suggested by the guide. Each adapter needs its own configuration file to setup the communication that will be saved in 
 .B ./pulpissimo/fpga/pulpissimo-$BOARD/CONNECTOR_NAME.cfg.
 

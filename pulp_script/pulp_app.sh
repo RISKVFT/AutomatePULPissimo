@@ -32,13 +32,43 @@ pulp_app [OPTION]   Is a bash script able to create pulp bitstream,
 		    it into board, actually zcu102 is the  default
 		    board and hello is the default application.
 OPTION
-	-o|--board
-		selection of target board
-	-b|--bitstream
+	-s|--bitstream
 		create bitstream using PULPissimo_bitstream.sh
 
 	-d|--download
 		download bitstream into board using
+<<<<<<< HEAD
+		make -C pulpissimo-zcu102 download
+	-b|--build-sdk-openocd
+		build the sdk and opeocd patch
+	-c|--compile C_APPDIR
+		create cross compiled test elf file of hello
+	-t|--terminal T_APPDIR
+		if the  terminal with openOCD, gdb and screen, 
+		for screen is possible to select usb number using
+		-u option
+	-e|--export-variables
+		After -b option the environment varible  are setted in .environ.env 
+		file, so this action set variable find in .environ.env in ~/.bash_profile
+		so that each time that a shell is open the variable are setted.
+		After the execution of the action you should restart shell 
+		to have variable setted. 
+	-h|--help
+		print this help
+	-u|--usb-for-screen USB|all|i
+		selection of usb for minicom connection example:
+		-u ttyUSB0
+		all option istead screen all usb
+		i option show corrently usb and their name
+	-o|--board BOARD
+		selection of target board
+	-r|--connector CONNECTOR_NAME
+		CONNECTOR_NAME should be the name of jtag programmer and debugger
+		used to upload and debug application on pulpissimo. This 
+		connector should support openOCD. This name is used to call 
+		./pulpissimo/fpga/pulpissimo-\$BOARD/\$CONNECTOR_NAME.cfg 
+		as configuration of openOCD.
+=======
 		make -C pulpissimo-[board] download
 
 	-c|--compile directory_of_application
@@ -54,6 +84,7 @@ OPTION
 		with FPGA through UART, gdb and OpenOCD 
 		for screen is possible to select usb number using
 		-u option
+>>>>>>> 64e7cd01f0da5e303c120422fa68cafb4d400657
 	directory_of_application will be placed in this path
 	./pulp-rt-examples/directory_of_application/
 	in order to find application directory, while in this path
@@ -143,18 +174,17 @@ while true; do
 	       	-c|--compile)
 			COMPILE=1
 			shift
-			C_OPT=$1
+			C_APPDIR=$1
 			echo $1
 			NOTHING=0
 			shift
-			;;
 		-t|--terminals)
 			TERMINALS=1
 			shift
-			T_OPT=$1
+			T_APPDIR=$1
 			echo $1
 			NOTHING=0
-			shift
+			shift                                                                           
 			;;
 		-e|--export-variables)
 			NOTHING=0
@@ -177,7 +207,7 @@ while true; do
                                 zcu102)
                                         ;;
                                 zcu104)
-                                        ;;
+                     USB          ;;
                                 genesys2)
                                         ;;
                                 zedboard)
@@ -280,7 +310,7 @@ fi
 
 if [[ $COMPILE -eq 1 ]]; then
 	Print "c" " Compiling"
-	cd $DIR/pulp-rt-examples/$C_OPT
+	cd $DIR/pulp-rt-examples/$C_APPDIR
 	echo $(pwd)
         mon_run "make clean all" "$LOG/make_log.txt" 1 $LINENO
 fi
@@ -296,7 +326,7 @@ if [[ $TERMINALS -eq 1 ]] && [[ $exitflag -eq 0 ]]; then
 	gnome-terminal --geometry=70x15+0+0 -- bash -c "$OPENOCD/openocd -f $DIR/pulpissimo/fpga/pulpissimo-$BOARD/$CONNECTOR_NAME.cfg; exec bash"
 	
 	# gdb terminal
-	gnome-terminal --geometry=70x15+1000+0 -- bash -c "$PULP_RISCV_GCC_TOOLCHAIN/bin/riscv32-unknown-elf-gdb -x $DIR/pulpissimo/fpga/pulpissimo-$BOARD/elf_run.gdb ./pulp-rt-examples/$T_OPT/build/pulpissimo/test/test; exec bash"
+	gnome-terminal --geometry=70x15+1000+0 -- bash -c "$PULP_RISCV_GCC_TOOLCHAIN/bin/riscv32-unknown-elf-gdb -x $DIR/pulpissimo/fpga/pulpissimo-$BOARD/elf_run.gdb ./pulp-rt-examples/$T_APPDIR/build/pulpissimo/test/test; exec bash"
 	
 	# Various UART terminal
 	if [[ $USB != "all" ]]; then
