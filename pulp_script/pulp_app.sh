@@ -25,7 +25,8 @@ usbInfo(){
 	done
 }
 
-UsageExit(){
+UsageExit()
+{
 	echo -e "\
 pulp_app [OPTION]   Is a bash script able to create pulp bitstream,
 		    upload it into board compile application and run
@@ -37,7 +38,6 @@ OPTION
 
 	-d|--download
 		download bitstream into board using
-<<<<<<< HEAD
 		make -C pulpissimo-zcu102 download
 	-b|--build-sdk-openocd
 		build the sdk and opeocd patch
@@ -68,24 +68,9 @@ OPTION
 		connector should support openOCD. This name is used to call 
 		./pulpissimo/fpga/pulpissimo-\$BOARD/\$CONNECTOR_NAME.cfg 
 		as configuration of openOCD.
-=======
 		make -C pulpissimo-[board] download
-
-	-c|--compile directory_of_application
-		create cross compiled test elf file of hello
-
-	-u|--usb-for-screen usb_name|all|i
-		selection of usb for screen connection example:
-		-u ttyUSB0
-		all option istead screen all usb
-		i option show current usb and their name
-	-t|--terminal directory_of_application
-		opens 3 terminals for communication and debugging 
-		with FPGA through UART, gdb and OpenOCD 
-		for screen is possible to select usb number using
-		-u option
->>>>>>> 64e7cd01f0da5e303c120422fa68cafb4d400657
-	directory_of_application will be placed in this path
+	
+		directory_of_application will be placed in this path
 	./pulp-rt-examples/directory_of_application/
 	in order to find application directory, while in this path
 	./pulp-rt-examples/directory_of_application/build/pulpissimo/test/test
