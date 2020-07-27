@@ -31,16 +31,16 @@ cd $PULP_DIR
 pulp_install -v -c pulp -t y
 ```
 With this command will be installed:
-- pulp-riscv-gnu-toolchain, env variable setted: PULP_RISCV_GCC_TOOLCHAIN, VSIM_PATH
+- pulp-riscv-gnu-toolchain, env variable setted: `PULP_RISCV_GCC_TOOLCHAIN`, `VSIM_PATH`
 - pulp-sdk
 - pulp-builder
 - pulpissimo 
 - pulp-rt-example
 - virtual platform
 
- All variable setted will be saved in ~/.bash_profile so will be loaded at each shell start.
+ All variable setted will be saved in `~/.bash_profile` so will be loaded at each shell start.
 
-Now you should connect all usb cable to board, for zcu102: J2 as fpga JTAG programmer, J38 as UART interface, and J55 (pin 1,3,5,7,9) as pulpissimo programmer/debugger!!
+Now you should connect all usb cable to board, for zcu102: `J2 as fpga JTAG programmer, J38 as UART interface, and J55 (pin 1,3,5,7,9) as pulpissimo programmer/debugger`!!
 ### bitstream generation   WARNING LONG OPERATION!!!
 For bitstream generation and download into fpga you need 
 the vivado executable available in the shell, usually
@@ -64,7 +64,7 @@ pulp_app -d
 pulp_app -b
 ```
 ### compiling hello application
-This command compile application in ./pulp-rt-examples/hello
+This command compile application in `./pulp-rt-examples/hello`
 ```
 pulp_app -c "hello"
 ```
