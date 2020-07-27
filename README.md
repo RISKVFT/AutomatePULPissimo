@@ -13,13 +13,13 @@ For installation of PULPissimo project, some devices and software are required. 
 For example we start the intallation PULPissimo project in a virgin Virtual Machine with Ubuntu 16.04.4 LTS 64-bit and 120GB of free disk space.
 
 ## Example of use
-After have cloned this repository you could install all scripts
+After have cloned this repository we install all scripts
 with:
 ```
 ./install.sh
 ```
 pulp_install, pulp_app and pulp_script  are now available in whatever shell after shell restart.
-You could now create a pulpissimo project folder for installation:
+We now create a pulpissimo project folder for installation:
 ```
 export PULP_DIR="pulp_riscv"
 mkdir $PULP_DIR 
@@ -38,7 +38,7 @@ With this command will be installed:
 - pulp-rt-example
 - virtual platform
 
-All variable setted will be saved in ~/.bash_profile so will be loaded at each shell start.
+ All variable setted will be saved in ~/.bash_profile so will be loaded at each shell start.
 
 Now you should connect all usb cable to board, for zcu102: J2 as fpga JTAG programmer, J38 as UART interface, and J55 (pin 1,3,5,7,9) as pulpissimo programmer/debugger!!
 ### bitstream generation   WARNING LONG OPERATION!!!
