@@ -1,19 +1,30 @@
 # AutomatePULPissimo
 
-Here you can find series of bash script to automatize PULPissimo installation and debug mainly on zcu102 board.
+Here you can find a series of bash script aimed to automatize the PULPissimo installation and debugging processes for the ZCU102 board (and some other boards).
 
-## Software and Harware requirements
-For installation of PULPissimo project, some devices and software are required. In particular:
-- zcu102,  zcu104,  genesys2,  zedboard,  nexys or nexys_video board, we use `zcu102`;
+## Software and Hardware requirements
+For installation of PULPissimo project, some devices, softwares and packages are required. In particular, before start you need:
+- ZCU102,  ZCU104,  Genesys2,  Zedboard,  Nexys or Nexys_video board (we used `ZCU102`);
 - microUSB-USB cables;
-- JTAG adapter supporting openOCD, we use olimex-arm-usb-tiny-h programmer and debugger;
+- JTAG adapter supporting openOCD (we used olimex-arm-usb-tiny-h programmer and debugger adapter);
 - Ubuntu 18.04 (or Ubuntu 16.04) with at least 97GB available (85GB for Vivado and 12GB for Pulpissimo project);
-- Vivado 2019.2 ;
+- Vivado 2019.2 (or older);
 
-For example we start the intallation PULPissimo project in a virgin `Virtual Machine with Ubuntu 16.04.4 LTS 64-bit and 120GB of free disk space`.
+For example, we tested the installation of PULPissimo project in a virgin `Virtual Machine with Ubuntu 16.04.4 LTS 64-bit and 120GB of free disk space`.
+
+## What you will get at the end of the process
+At the end of the installation process, you will have the PULPissimo environment correctly installed, meaning that the following tools will be downloaded and installed (and configured for the ZCU102 board by default):
+- PULPissimo SDK;
+- pulp riscv-gnu-toolchain;
+- pulp-builder;
+- OpenOCD (correct version);
+- pulpissimo;
+- pulp rt example applications;
+- virtual platform;
+
 
 ## Example of use
-After have cloned this repository we install all scripts
+After having cloned this repository, we install all scripts
 with:
 ```
 ./install.sh
@@ -25,65 +36,65 @@ export PULP_DIR="pulp_riscv"
 mkdir $PULP_DIR 
 ```
 
-### Installation of PULPissimo project WARNING LONG OPERATION!!!
+### Installation of PULPissimo project (WARNING LONG OPERATION!!!)
 ```bash
 cd $PULP_DIR
 pulp_install -v -c pulp -t y
 ```
-With this command will be installed:
-- pulp-riscv-gnu-toolchain, env variable setted: `PULP_RISCV_GCC_TOOLCHAIN`, `VSIM_PATH`
+With this command the following tools will be installed:
+- pulp-riscv-gnu-toolchain, env variable sets: `PULP_RISCV_GCC_TOOLCHAIN`, `VSIM_PATH`
 - pulp-sdk
 - pulp-builder
 - pulpissimo 
 - pulp-rt-example
 - virtual platform
 
- All variable setted will be saved in `~/.bash_profile` so will be loaded at each shell start.
+ All variables set will be saved in `~/.bash_profile` so they will be automatically loaded each time a new shell is created.
 
-Now you should connect all usb cable to board, for zcu102: `J2 as fpga JTAG programmer, J38 as UART interface, and J55 (pin 1,3,5,7,9) as pulpissimo programmer/debugger`!!
-### Bitstream generation   WARNING LONG OPERATION!!!
+Now you should connect all usb cables to the board board, for zcu102: `J2 as fpga JTAG programmer, J83 as UART interface, and J55 (pin 1,3,5,7,9) as pulpissimo programmer/debugger`!!
+### Bitstream generation   (WARNING LONG OPERATION!!!)
 For bitstream generation and download into fpga you need 
-the vivado executable available in the shell, usually
-this is not done by vivado installation so you can easly add
+the vivado executable available in the shell environment. Usually
+this is not done by Vivado installation, so you can easly add
 `/tools/Xilinx/Vivado/<vivado_version>/bin` to $PATH executable.
-If you don't have vivado executable in $PATH environment please set it with  
+If you don't have vivado executable in $PATH environment, please set it with  
 ```bash
 export PATH=$PATH:/tools/Xilinx/Vivado/<vivado_version>/bin".
 ```
-Then this command generate bitstream for fpga download and binary file for flashing:
+Then this command generates the bitstream for fpga download and binary file for flashing:
 ```
 pulp_app -s
 ```
-### Download bistream into fpga
+### Download bitstream into fpga
 Using this command the bitstream will be downloaded using J2 connector (in zcu102 board).
 ```
 pulp_app -d
 ```
-### Build of sdk and openocd patch WARNING LONG OPERATION!!!
+### Build of sdk and openocd patch (WARNING LONG OPERATION!!!)
 ```
 pulp_app -b
 ```
 ### Compiling hello application
-This command compile application in `./pulp-rt-examples/hello`
+This command compiles application in `./pulp-rt-examples/hello`
 ```
 pulp_app -c "hello"
 ```
 ### Verify USB connection
-With this command you will be able to understand what is correct USB used as UART by pulpissimo, it is connected to 
-J38 connector in zcu102 board.
+With this command you will be able to understand which is the correct USB used as UART by pulpissimo, it is connected to 
+J83 connector in the zcu102 board.
 ```
 pulp_app -u i
 ```
 ### Download and debug application on pulpissimo!!!!
-Your board name will be called `BOARD` and should be between: zcu102,zcu104,genesys2, zedboard, nexys and nexys_video.
-Your connector name will be `CONNECTOR_NAME` and you have to placed openOCD config file, for JTAG programmer, in `./pulpissimo/fpga/pulpissimo-BOARD/` and named it `$CONNECTOR_NAME.cfg`.
-This command will begin debug of hello application on board selected, with selected JTAG programmer, using `USB` as UART to communicate with pulpissimo. 
+Your board name will be called `BOARD` and should be among: zcu102, zcu104, genesys2, zedboard, nexys and nexys_video.
+Your connector name will be `CONNECTOR_NAME` and you have to place openOCD config file, for JTAG programmer, in `./pulpissimo/fpga/pulpissimo-BOARD/` and name it `$CONNECTOR_NAME.cfg`.
+This command will start the debug process of hello application on the selected board, with the selected JTAG programmer, using `USB` as UART to communicate with pulpissimo. 
 ```bash
 pulp_app -o $BOARD -r $CONNECTOR_NAME -u $USB -t "hello"
 ```
 
-### Faster alternativer
-If you know `correct UART usb`, have connected all three connector, you have `already vivado in PATH` variable and you have `./pulpissimo/fpga/pulpissimo-$BOARD/$CONNECTOR_NAME.cfg` file, you could do all previous action in an atomic command:
+### Faster alternatives
+If you know the `correct UART usb`, you have connected all the three connectors, you have `already vivado in PATH` variable and you have `./pulpissimo/fpga/pulpissimo-$BOARD/$CONNECTOR_NAME.cfg` file, you can do all the previous operations in an atomic command:
 ```bash
 pulp_app -s -d -b -c "hello" -o $BOARD -r $CONNECTOR_NAME -u $USB -t "hello"
 ```
