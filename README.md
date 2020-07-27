@@ -2,6 +2,16 @@
 
 Here you can find series of bash script to automatize PULPissimo installation and debug mainly on zcu102 board.
 
+## Software and Harware requirements
+For installation of PULPissimo project, some devices and software are required. In particular:
+- ZCU102  zcu104,  genesys2,  zedboard,  nexys or nexys_video board, we use zcu102;
+- microUSB-USB cables;
+- JTAG adapter supporting openOCD, we use olimex-arm-usb-tiny-h programmer and debugger;
+- Ubuntu 18.04 (or Ubuntu 16.04) with at least 97GB available (85GB for Vivado and 12GB for Pulpissimo project);
+- Vivado 2019.2 ;
+
+For example we start the intallation PULPissimo project in a virgin Virtual Machine with Ubuntu 16.04.4 LTS 64-bit and 120GB of free disk space.
+
 ## Example of use
 After have cloned this repository you could install all scripts
 with:
@@ -27,7 +37,9 @@ With this command will be installed:
 - pulpissimo 
 - pulp-rt-example
 - virtual platform
-all variable setted will be saved in ~/.bash_profile so will be loaded at each shell start.
+
+All variable setted will be saved in ~/.bash_profile so will be loaded at each shell start.
+
 Now you should connect all usb cable to board, for zcu102: J2 as fpga JTAG programmer, J38 as UART interface, and J55 (pin 1,3,5,7,9) as pulpissimo programmer/debugger!!
 ### bitstream generation   WARNING LONG OPERATION!!!
 For bitstream generation and download into fpga you need 
