@@ -4,13 +4,13 @@ Here you can find series of bash script to automatize PULPissimo installation an
 
 ## Software and Harware requirements
 For installation of PULPissimo project, some devices and software are required. In particular:
-- ZCU102  zcu104,  genesys2,  zedboard,  nexys or nexys_video board, we use zcu102;
+- ZCU102  zcu104,  genesys2,  zedboard,  nexys or nexys_video board, we use `zcu102`;
 - microUSB-USB cables;
 - JTAG adapter supporting openOCD, we use olimex-arm-usb-tiny-h programmer and debugger;
 - Ubuntu 18.04 (or Ubuntu 16.04) with at least 97GB available (85GB for Vivado and 12GB for Pulpissimo project);
 - Vivado 2019.2 ;
 
-For example we start the intallation PULPissimo project in a virgin Virtual Machine with Ubuntu 16.04.4 LTS 64-bit and 120GB of free disk space.
+For example we start the intallation PULPissimo project in a virgin `Virtual Machine with Ubuntu 16.04.4 LTS 64-bit and 120GB of free disk space`.
 
 ## Example of use
 After have cloned this repository we install all scripts
@@ -20,13 +20,13 @@ with:
 ```
 pulp_install, pulp_app and pulp_script  are now available in whatever shell after shell restart.
 We now create a pulpissimo project folder for installation:
-```
+```bash
 export PULP_DIR="pulp_riscv"
 mkdir $PULP_DIR 
 ```
 
 ### Installation of PULPissimo project WARNING LONG OPERATION!!!
-```
+```bash
 cd $PULP_DIR
 pulp_install -v -c pulp -t y
 ```
@@ -45,8 +45,11 @@ Now you should connect all usb cable to board, for zcu102: J2 as fpga JTAG progr
 For bitstream generation and download into fpga you need 
 the vivado executable available in the shell, usually
 this is not done by vivado installation so you can easly add
-/tools/Xilinx/Vivado/<vivado_version>/bin to $PATH executable.
-If you haven't vivado exascutable in $PATH environment please set it\n export PATH=$PATH:/tools/Xilinx/Vivado/<vivado_version>/bin"
+`/tools/Xilinx/Vivado/<vivado_version>/bin` to $PATH executable.
+If you don't have vivado exascutable in $PATH environment please set it with  
+```bash
+export PATH=$PATH:/tools/Xilinx/Vivado/<vivado_version>/bin".
+```
 This command generate bitstream for fpga download and binary file for flashing:
 ```
 pulp_app -s
@@ -72,8 +75,8 @@ pulp_app -u i
 ```
 ### download and debug application on pulpissimo!!!!
 Your board name will be called BOARD and should be between: zcu102,zcu104,genesys2, zedboard, nexys and nexys_video.
-Your connector name will be CONNECTOR_NAME.
-You have to placed openOCD config file in ./pulpissimo/fpga/pulpissimo-zcu102/ and named it $CONNECTOR_NAME.cfg.
+Your connector name will be `CONNECTOR_NAME`.
+You have to placed openOCD config file in `./pulpissimo/fpga/pulpissimo-zcu102/` and named it `$CONNECTOR_NAME.cfg`.
 echo "Give me a valid usb name which is inside /dev directory (ttyUSB0 as default)"
 read USB
 
@@ -81,8 +84,8 @@ pulp_app -o $BOARD -r $CONNECTOR_NAME -u $USB -t "hello"
 
 
 ### If you know correct UART usb, have connected all three connector, you have
-already vivado in PATH variable and you have ./pulpissimo/fpga/pulpissimo-$BOARD/$CONNECTOR_NAME.cfg file, you could do all previous action in a unic command:
-```
+already vivado in PATH variable and you have `./pulpissimo/fpga/pulpissimo-$BOARD/$CONNECTOR_NAME.cfg` file, you could do all previous action in a unic command:
+```bash
 pulp_app -s -d -b -c "hello" -o $BOARD -r $CONNECTOR_NAME -u $USB -t "hello"
 ```
 ## Files description
@@ -111,8 +114,8 @@ AutomatizePULP
 
 ### install.sh: 
 This script simply puts pulp_app.sh and pulp_install.sh into the right directories into the filesystem to be always accessible.<br/>
-It copies pulp_script/pulp_app.sh and pulp_script/pulp_install.sh in /usr/bin/ and manpages/pulp_app.1 and manpages/pulp_install.1 into /usr/share/man/man1/.<br/>
-Then it also copies lib/ccommon.sh script into custom folder /usr/lib/bash-lib where there are all the user defined bash functions.
+It copies `pulp_script/pulp_app.sh and pulp_script/pulp_install.sh` in /usr/bin/ and manpages/pulp_app.1 and manpages/pulp_install.1 into /usr/share/man/man1/.<br/>
+Then it also copies lib/ccommon.sh script into custom folder `/usr/lib/bash-lib` where there are all the user defined bash functions.
 
 ### pulp_env_example.env: 
 It is an example of what you can find in your personal pulp_env_example.env file once you launch the PULPissimo installation. It contains the environment variables required by the various scripts to perform a correct PULPissimo installation.
@@ -157,11 +160,11 @@ The different options are:
 - -t: Decide if install test suite or not<br/>
 
 Useful links:
-- https://github.com/pulp-platform/pulp-riscv-gnu-toolchain
-- https://github.com/pulp-platform/pulp-sdk.git
-- https://github.com/pulp-platform/pulp-builder.git
-- https://github.com/pulp-platform/pulpissimo.git
-- https://github.com/pulp-platform/pulp-rt-examples.git
+- [pulp-riscv-gnu-toolchain](https://github.com/pulp-platform/pulp-riscv-gnu-toolchain)
+- [pulp-sdk](https://github.com/pulp-platform/pulp-sdk.git)
+- [pulp-builder](https://github.com/pulp-platform/pulp-builder.git)
+- [pulpissimo](https://github.com/pulp-platform/pulpissimo.git)
+- [pulp-rt-example](https://github.com/pulp-platform/pulp-rt-examples.git)
 	
 For more informations look the comments inside the script.
 	
