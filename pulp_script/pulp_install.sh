@@ -16,6 +16,8 @@
 source $BASHLIB/ccommon.sh
 
 gitclone() {
+	# This function is used to avoid recloning of reposistory each time
+	# that the installation is redone due to some error
 	# $1 comando
 	# $2 clone dir
 	# $3 log file
@@ -108,7 +110,7 @@ export PATH=$PATH:$INSTALL_DIR/bin
 rm -rf error_monitor.txt error_log.txt trace_command.txt
 touch error_monitor.txt error_log.txt trace_command.txt
 
-
+########## ARGUMENT PARSING #######################################
 
 TEMP=`getopt -o hp:vc:t: --long help,part:,verbose,cross_compiler:,test_suite: -- "$@"`
 eval set -- "$TEMP"

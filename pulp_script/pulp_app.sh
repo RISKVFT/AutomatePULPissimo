@@ -3,6 +3,11 @@
 #############################################################################
 ####### FUNCTIONS ###########################################################
 setJsonBoard(){
+	# This function create the correct json file
+	# in pulp-sdk/pulp-config/configs/fpgas/ directory
+	# used to build sdk
+	# The second file created is the board file used to
+	# set board variable and platform to use setted as fpga
 	BOARD=$1
 	cd ./pulp-config/configs/fpgas/
         mv genesys2.json $BOARD.json
@@ -13,6 +18,7 @@ setJsonBoard(){
 }
 
 usbInfo(){
+	# This function is used to give information about usb name
 	for sysdevpath in $(find /sys/bus/usb/devices/usb*/ -name dev); do
 	    (
 		syspath="${sysdevpath%/dev}"
@@ -27,6 +33,7 @@ usbInfo(){
 
 UsageExit()
 {
+	# Print help and exit
 	echo -e "\
 pulp_app [OPTION]   Is a bash script able to create pulp bitstream,
 		    upload it into board compile application and run
@@ -34,52 +41,51 @@ pulp_app [OPTION]   Is a bash script able to create pulp bitstream,
 		    board and hello is the default application.
 OPTION
 	-s|--bitstream
-		create bitstream using PULPissimo_bitstream.sh
-
+		create bitstream and binary file for flashing, this
+		option use vivado
 	-d|--download
 		download bitstream into board using
-		make -C pulpissimo-zcu102 download
+		make -C pulpissimo-BOARD download
 	-b|--build-sdk-openocd
 		build the sdk and opeocd patch
 	-c|--compile C_APPDIR
-		create cross compiled test elf file of hello
+		create cross compiled test elf file from test.c 
+		file founded in ./pulp-rt-examples/\$C_APPDIR
 	-t|--terminal T_APPDIR
 		if the  terminal with openOCD, gdb and screen, 
 		for screen is possible to select usb number using
-		-u option
+		-u option and -r for connector option. The file
+		tested is pulp-rt-examples/\$T_APPDIR/build/pulpissimo/test/test
+		created by compilation using -c option.
 	-e|--export-variables
 		After -b option the environment varible  are setted in .environ.env 
 		file, so this action set variable find in .environ.env in ~/.bash_profile
-		so that each time that a shell is open the variable are setted.
+		, in this way each time that a shell is open the variable are setted.
 		After the execution of the action you should restart shell 
 		to have variable setted. 
 	-h|--help
 		print this help
 	-u|--usb-for-screen USB|all|i
-		selection of usb for minicom connection example:
+		selection of usb for screen connection example:
 		-u ttyUSB0
 		all option istead screen all usb
 		i option show corrently usb and their name
 	-o|--board BOARD
-		selection of target board
+		selection of target board, possible board are
+		zcu102, zcu104, genesys2, zedboard, nexys or nexys_video
 	-r|--connector CONNECTOR_NAME
 		CONNECTOR_NAME should be the name of jtag programmer and debugger
 		used to upload and debug application on pulpissimo. This 
 		connector should support openOCD. This name is used to call 
 		./pulpissimo/fpga/pulpissimo-\$BOARD/\$CONNECTOR_NAME.cfg 
 		as configuration of openOCD.
-		make -C pulpissimo-[board] download
 	
-		directory_of_application will be placed in this path
-	./pulp-rt-examples/directory_of_application/
-	in order to find application directory, while in this path
-	./pulp-rt-examples/directory_of_application/build/pulpissimo/test/test
-	to find executable.
 "
 	exit 1;	
 }
 
 createBoardFile(){
+	# This board file is used to set board
 	BOARD=$1
 	echo "#!/bin/bash
 BOARD=VARIABLE
@@ -95,7 +101,10 @@ if [ -e \${scriptDir}/../../../init.sh ]; then
 fi
 " > $1.sh
 }
-
+ 
+# after installation BASHLIB option will be exported by 
+# .bash_profile and used here to find ccommon.sh file
+# that is placed in $BASHLIB directory by installer
 source $BASHLIB/ccommon.sh
 
 # Regular Colors
@@ -236,6 +245,8 @@ fi
 ###### PROGRAM ######################################################
 
 # Setting environment variable
+# variable previous setted by -b option in $ENVIRON_FILE will be saved in ~/.bash_profile file
+# in order to be available in shell after restart.
 if [[ $EXPORT  -eq 1 ]]; then
 	if test -f "$ENVIRON_FILE"; then
 		Print "e" "Set environment var"
@@ -250,6 +261,7 @@ if [[ $EXPORT  -eq 1 ]]; then
 	fi 
 fi
 
+# Creation of log directory for mon_run output
 mkdir -p $LOG
 
 if [[ $BITSTREAM -eq 1 ]]; then
@@ -270,6 +282,11 @@ if [[ $BITSTREAM -eq 1 ]]; then
 fi
 
 if [[ $DOWNLOAD -eq 1 ]]; then
+	# download of bistream into fpga, remember that this isn't a flashing, 
+        # if you restart fpga all configuration will be lost and -d action
+	# should be redone.	
+
+	# waiting for user to connect cable for programming
 	Action "Have you connected usb cables for riscv download at port J2 of $BOARD?"
 	cd $DIR/pulpissimo/fpga
 	Print "f" " Flashing fpga"
@@ -277,6 +294,7 @@ if [[ $DOWNLOAD -eq 1 ]]; then
 fi
 
 if [[ $BUILD_SDK_OPENOCD -eq 1 ]] || [[ $COMPILE -eq 1 ]] ; then
+	# Setting of env varible 
 	cd $DIR/pulp-sdk
 	setJsonBoard $BOARD
 	source configs/pulpissimo.sh
@@ -288,12 +306,14 @@ if [[ $BUILD_SDK_OPENOCD -eq 1 ]] || [[ $COMPILE -eq 1 ]] ; then
 fi
 
 if [[ $BUILD_SDK_OPENOCD -eq 1 ]]; then
+	# Building of sdk and openocd patch
 	mon_run "./pulp-tools/bin/plpbuild checkout build --p openocd --stdout" "$LOG/checkout.txt" 1 $LINENO
 	mon_run "make all" "$LOG/make_all.txt" 1 $LINENO
 	env | grep -e "PULP\|OPENOCD" > $ENVIRON_FILE
 fi
 
 if [[ $COMPILE -eq 1 ]]; then
+	# compiling application
 	Print "c" " Compiling"
 	cd $DIR/pulp-rt-examples/$C_APPDIR
 	echo $(pwd)

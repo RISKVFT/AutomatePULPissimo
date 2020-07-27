@@ -7,7 +7,22 @@ Installation of PULPissimo project, an evolution of PULPino.
 -v [-c pulp|linux|linux32|linuxm]
 [-p 0|1|2|3|4|5]
 [-t y|n]
-.SH DESCRIPTION          
+.SH DESCRIPTION
+.TP 
+.B SYSTEM REQUIREMENTS
+In order to correctly install and use pulpissimo you should satisfy following requirements:
+.RS 1.2i
+.TP
+.B  Ubuntu 16.04 or CentOS 7.
+.TP
+.B Mentor ModelSim tested with 10.6b
+This is optional if you only use fpga target
+.TP
+.B python3.4
+.TP
+.B Vivado 19
+.RE          
+.PP
 .B pulp_install
 is a bash script that install and configure 
 .B PULPissimo project 
@@ -16,11 +31,17 @@ is runned, particularly it download and configure following repository:
 .PP                    
 .TP
 .B pulp-riscv-gnu-toolchain installation 
-This toolchain is available at <https://github.com/pulp-platform/pulp-riscv-gnu-toolchain-pulp-riscv-gnu-toolchain> It provides theRISCV C and C++ cross-compiler.  After the installation of all the necessary Ubuntu (or CentOS) dependencies, the script clones the git repository of the toolchain and configures the correct cross-compiler according to the option -c|--cross-compiler set as command line argument. With the -t|--test-suite command line argument, instead, the user can decide if install or not the De-jaGnu test suite for RISC-V, that is a front-end to write tests for any pro-gram with a portable interface.  In this step, the environment variables PULP_RISCV_GCC_TOOLCHAIN and  VSIM_PATH are set. The installation directory of the riscv toolchain is "/opt/riscv/", so this is the value assigned to PULP_RISCV_GCC_TOOLCHAIN variable. Instead, VSIM_PATH is set to "(pulpissimo_root)/pulpissimo". Obviously, also other minor variables are set in this step. All these env variables are also added to .bash_profile file so as to make them permanent every time a new bash shell is create.
+This toolchain is available at <https://github.com/pulp-platform/pulp-riscv-gnu-toolchain-pulp-riscv-gnu-toolchain> It provides the
+.B RISCV C and C++ cross-compiler.
+After the installation of all the necessary Ubuntu (or CentOS) 
+.B dependencies
+, the script clones the git repository of the toolchain and configures the correct cross-compiler according to the option -c|--cross-compiler set as command line argument. With the -t|--test-suite command line argument, instead, the user can decide if install or not the De-jaGnu test suite for RISC-V, that is a front-end to write tests for any pro-gram with a portable interface.  
+
+In this step, the environment variables PULP_RISCV_GCC_TOOLCHAIN and  VSIM_PATH are set. The installation directory of the riscv toolchain is "/opt/riscv/", so this is the value assigned to PULP_RISCV_GCC_TOOLCHAIN variable. Instead, VSIM_PATH is set to "(pulpissimo_root)/pulpissimo". Obviously, also other minor variables are set in this step. All these env variables are also added to ~/.bash_profile file so as to make them permanent every time a new bash shell is create.
 
 .TP 
 .B PULP SDK installation
-The PULP SDK is available ati <https://github.com/pulp-platform/pulp-sdk.git> and after the installation of all the dependencies (such as specific version of Python) the repository is cloned.  In this stage, target and platform (rtl simulator, fpga, virtual platform) are chosen, so that the SDK can be built properly. This is a very important step, because the SDK allows to compile and run applications. To do this, it needs to be initializedby sourcing the "sourceme.sh" file which is inside the installation folder. Also in this stage, other env variables are set and saved permanently.
+The PULP SDK is available ati <https://github.com/pulp-platform/pulp-sdk.git> and after the installation of all the dependencies (such as specific version of Python) the repository is cloned.  In this stage, target and platform (rtl simulator, fpga, virtual platform) are chosen, so that the SDK can be built properly. This is a very important step, because the SDK allows to compile and run applications. To do this, it needs to be initialized by sourcing the "sourceme.sh" file which is inside the installation folder. Also in this stage, other env variables are set and saved permanently.
 
 .TP 
 .B PULP Builder installation
@@ -55,9 +76,9 @@ newlib cross-compiler for all pulp variants
 This will use the multilib support to build the libraries for 
 the various cores (riscy, zeroriscy and so on). The right libraries 
 will be selected depending on which compiler options you use.
-.Tp 
+.TP
 .B newlib 
-Newlib cross-compiler, You should now be ableto use riscv-gcc and its cousins.
+Newlib cross-compiler, You should now be able to use riscv-gcc and its cousins.
 .TP
 .B linux
 Linux cross compiler 64 bit
@@ -111,8 +132,8 @@ Decide if install test suite or not, this test suite
 .SH ENVIRONMENT      
 All setted variable are added to .bash_profile file that is loaded each bash restart.
 .SH SEE ALSO
-.BR a 3 ,
-.BR a 3 
-.SH BUGS            .
+.BR pulp_app 1 ,
+.BR pulp_script 1
+.SH BUGS            
 .SH CREDITS 
 Created by Elia Ribaldone, Luca Fiore and Marcello Neri

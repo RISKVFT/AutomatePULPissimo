@@ -63,7 +63,21 @@ monitor_file_error () {
 		   return 0
 	   fi
 }
-	
+
+## This function is used many times during installation and perform following 
+# action:
+#	1) execute a command in background ( $1 )
+#	2) redirect it's output in a log file ( $2 )
+#	3) continuously control log file printing the file line and last
+#		line in terminal.
+#	4) At the end check the log file in order to find errors, in this case
+#		print this error and exit
+#	5) $4 option set if the log file should be ovewritten (1) or the 
+#		new content chould be appended, is useful if you want that two 
+#		or more command share log file.
+#	6) $5 is the script line, can be gived using $LINENO varible,
+#		this is useful if you want to know where an error occur in 
+#		your script since $5 argument is printed.
 mon_run (){
 	   # $1 è il comando da eseguire
 	   # $2 è il file in cui scrivere il log
