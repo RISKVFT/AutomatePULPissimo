@@ -1,5 +1,6 @@
 # AutomatePULPissimo
 
+This is a project aimed to install the PULPissimo platform in order to more easily test and debug the RISCV core (RI5CY in this case) used in it.
 Here you can find a series of bash script aimed to automatize the PULPissimo installation and debugging processes for the ZCU102 board (and some other boards).
 
 ## Software and Hardware requirements
@@ -128,10 +129,10 @@ It copies `pulp_script/pulp_app.sh and pulp_script/pulp_install.sh` in /usr/bin/
 Then it also copies lib/ccommon.sh script into custom folder `/usr/lib/bash-lib` where there are all the user defined bash functions.
 
 ### pulp_env_example.env: 
-It is an example of what you can find in your personal pulp_env_example.env file once you launch the PULPissimo installation. It contains the environment variables required by the various scripts to perform a correct PULPissimo installation.
+It is an example of what you can find in your personal pulp_env_example.env file once you have launched the PULPissimo installation. It contains the environment variables required by the various scripts to perform a correct PULPissimo installation and configuration.
 
 ### manpages: 
-In this directory are contained all man pages, there are the man of pulp_app.sh, pulp_install.sh and pulp_script.sh. You can use them after executing ./install.sh.
+This directory contains all man pages. There are the man of pulp_app.sh, pulp_install.sh and pulp_script.sh. You can use them after executing ./install.sh.
 
 ### pulp_script/pulp_install.sh:
 This is the script where all the necessary repositories for toolchain, sdk, pulp-builder and pulpissimo are cloned.<br/>
@@ -179,7 +180,7 @@ Useful links:
 For more informations look the comments inside the script and in manpages.
 	
 ### pulp_script/pulp_app.sh:
-This is the script to launch if you want to run an application on the FPGA. In particular there are different options:
+This is the script to run an application on the FPGA. In particular there are different options:
 - -s|--bitstream:
                 create bitstream using PULPissimo_bitstream.sh
 - -d|--download:
@@ -220,7 +221,7 @@ This is the script to launch if you want to run an application on the FPGA. In p
 This is a bash library file.
 
 ### pulp_script/pulp_script.sh
-In this script are contained a complete use of pulp_install and pulp_app command. It is interactive and perform following action:
+This script contains a complete use of pulp_install and pulp_app command. It is interactive and perform following action:
 - Install pulpissimo project with pulp_install;
 - Create pulpissimo bitstream;
 - Download it into fpga;
@@ -229,8 +230,8 @@ In this script are contained a complete use of pulp_install and pulp_app command
 - Open multiple terminal in order to debug this application on fpga.
 
 
-### Team
-
+## Team
+We are three MSc Electronic Engineering students at Politecnico di Torino:
 - Fiore Luca
 - Neri Marcello
 - Ribaldone Elia
