@@ -149,6 +149,20 @@ don't work as you want since olimex-arm-usb-tiny-h.cfg file is searched in ./pul
 .B -r|--connector CONNECTOR_NAME (default CONNECTOR_NAME=olimex-arm-usb-tiny-h)
 Set the base name of .cfg file used by openOCD to configure JTAG programmer and debugger used to program and debug the microcontroller. Indeed, JTAG is connected to FPGA JTAG, while PULPissimo JTAG  is mapped on another connector. It is important to observe that this connection can be made by using other different JTAG adapters, such as Digilent JTAG-HS2 or OLIMEX ARM-USB-OCD-H that are those ones suggested by the guide. Each adapter needs its own configuration file to setup the communication that will be saved in 
 .B ./pulpissimo/fpga/pulpissimo-$BOARD/CONNECTOR_NAME.cfg.
+In original repository there is only support for digilent-jtag-hs2 and olimex-arm-usb-ocd-h. If you have a different programmer/debugger you could use file in:
+.B ./pulp-sdk/tools/riscv-openocd/tcl/interface/ftdi/
+directory that contains files with configuration only for the openOCD programmer, instead file in ./pulpissimo/fpga/pulpissimo-$BOARD also contain fpga configuration. 
+So you should merge this files, following this procedure:
+.RS 1.2i
+.TP 
+.B 1
+Copying file ./pulp-sdk/tools/riscv-openocd/tcl/interface/ftdi/CONNECTOR_NAME.cfg into  ./pulpissimo/fpga/pulpissimo-$BOARD/
+.TP
+.B 2
+Copying text from  ./pulpissimo/fpga/pulpissimo-$BOARD/digilent-jtag-hs2.cfg file from the line: 
+.B set _CHIPNAME riscv 
+to the end and appending it in your new config file (in ./pulpissimo/fpga/pulpissimo-$BOARD/) . 
+.RE
 
 .SH BOARDS
 .TP 

@@ -337,19 +337,16 @@ if [[ $TERMINALS -eq 1 ]] && [[ $exitflag -eq 0 ]]; then
 		for i in {0...5}; do
 			sudo chmod 777 /dev/ttyUSB$i
 		done
-		sudo gnome-terminal --geometry=70x15+0+355 --tab -t "/dev/ttyUSB0" -- bash -c "sudo screen /dev/ttyUSB0 115200; exec bash"
-		sudo gnome-terminal --geometry=70x15+200+355 --tab -t "/dev/ttyUSB1" -- bash -c "sudo screen /dev/ttyUSB1 115200; exec bash"
-		sudo gnome-terminal --geometry=70x15+400+355 --tab -t "/dev/ttyUSB2" -- bash -c "sudo screen /dev/ttyUSB2 115200; exec bash" 
-		sudo gnome-terminal --geometry=70x15+600+355 --tab -t "/dev/ttyUSB3" -- bash -c "sudo screen /dev/ttyUSB3 115200; exec bash" 
-		sudo gnome-terminal --geometry=70x15+800+355  --tab -t "/dev/ttyUSB4" -- bash -c "sudo screen /dev/ttyUSB4 115200; exec bash" 
+		sudo gnome-terminal --geometry=70x15+0+355 -- bash -c "sudo screen /dev/ttyUSB0 115200; exec bash"
+		sudo gnome-terminal --geometry=70x15+200+355 -- bash -c "sudo screen /dev/ttyUSB1 115200; exec bash"
+		sudo gnome-terminal --geometry=70x15+300+355 -- bash -c "sudo screen /dev/ttyUSB2 115200; exec bash" 
+		sudo gnome-terminal --geometry=70x15+400+355 -- bash -c "sudo screen /dev/ttyUSB3 115200; exec bash" 
+		sudo gnome-terminal --geometry=70x15+500+355 -- bash -c "sudo screen /dev/ttyUSB4 115200; exec bash" 
+		sudo gnome-terminal --geometry=70x15+600+355 -- bash -c "sudo screen /dev/ttyUSB5 115200; exec bash"
 	fi
 	Print "t" "Press enter when you want to close terminals."
 	read d
-	if [[ $(echo $(ps -A  | grep gnome-terminal | tr -s " " | cut -d " " -f 1 ) | wc -m) -lt 3 ]]; then
-		sudo kill -9 $(ps -A  | grep gnome-terminal | tr -s " " | cut -d " " -f 2)
-	else
-		sudo kill -9 $(ps -A  | grep gnome-terminal | tr -s " " | cut -d " " -f 1)
-	fi
+	kill -9 $(ps -A  | grep gnome-terminal | tr -s " " | cut -d " " -f 2)
 fi
 
 
